@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Project for DS course",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Saara Satokangas",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
