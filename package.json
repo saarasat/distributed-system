@@ -4,11 +4,16 @@
   "description": "Project for DS course",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "nodemon index.js"
   },
   "author": "Saara Satokangas",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "cluster": "^0.7.7",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6",
+    "socket.io": "^3.0.3",
+    "socket.io-redis": "^6.0.1"
   }
 }
