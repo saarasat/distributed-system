@@ -2,13 +2,52 @@
 version: '3.5'
 
 services:
-  app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: ds
-    volumes:
-      - ./:/usr/src/app
+  server:
+    build: ./nginx
+    links:
+      - server-one
+      - server-two
+      - server-three
     ports:
-      - 8080:8080
-    container_name: ds
+    - "8080:80"
+  server-one:
+    build: 
+      context: ./server
+    image: server-one
+    links:
+      - redis
+    expose:
+      - "8080"
+    container_name: server-one
+    environment:
+      - NAME=One
+  server-two:
+    build: 
+      context: ./server
+    image: server-two
+    links:
+      - redis
+    expose:
+      - "8080"
+    container_name: server-two
+    environment:
+      - NAME=Two
+  server-three:
+    build: 
+      context: ./server
+    image: server-three
+    links:
+      - redis
+    expose:
+      - "8080"
+    container_name: server-three
+    environment:
+      - NAME=Three
+  redis:
+    container_name: redis
+    image: redis:alpine
+    volumes:
+      - ../data/redis:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
+  

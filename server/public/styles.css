@@ -30,6 +30,7 @@ form button {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  width: 800px;
 }
 #messages li { 
   padding: 5px 10px;
@@ -39,4 +40,10 @@ form button {
 }
 #messages { 
   margin-bottom: 40px
+}
+#participants {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 800px;
 }

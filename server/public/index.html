@@ -5,15 +5,21 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    <div>
+      <ul id="messages"></ul>
+      <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+    <div>
+      <ul id="participants"></ul>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
-        var socket = io();
+        const socket = io();
         $('form').submit(() => {
           socket.emit('chat message', $('#m').val());
           $('#m').val('');
