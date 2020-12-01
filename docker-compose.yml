@@ -1,15 +1,18 @@
-
 version: '3.5'
 
 services:
-  server:
+  nginx-server:
+    restart: always
     build: ./nginx
+    image: nginx-server
     links:
       - server-one
       - server-two
       - server-three
+    container_name: nginx-server
     ports:
     - "8080:80"
+
   server-one:
     build: 
       context: ./server

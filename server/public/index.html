@@ -29,6 +29,10 @@
           $('#messages').append($('<li>').text(msg));
           window.scrollTo(0, document.body.scrollHeight);
         });
+        socket.on('socket name',(name) => {
+          $('#participants').append($('<li>').text("You are currently on server number" + name));
+          window.scrollTo(0, document.body.scrollHeight);
+        });
       });
     </script>
   </body>
