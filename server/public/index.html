@@ -5,35 +5,37 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div>
-      <ul id="messages"></ul>
-      <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-      </form>
-    </div>
+    <div id="container">
+      <div>
+        <ul id="messages"></ul>
+        <form action="">
+          <input id="m" autocomplete="off" /><button>Send</button>
+        </form>
+      </div>
     <div>
       <ul id="participants"></ul>
     </div>
+  </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
-        const socket = io();
+        const socket = io()
         $('form').submit(() => {
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
-        });
+          socket.emit('chat message', $('#m').val())
+          $('#m').val('')
+          return false
+        })
         socket.on('chat message',(msg) => {
-          $('#messages').append($('<li>').text(msg));
-          window.scrollTo(0, document.body.scrollHeight);
-        });
+          $('#messages').append($('<li>').text(msg))
+          window.scrollTo(0, document.body.scrollHeight)
+        })
         socket.on('socket name',(name) => {
-          $('#participants').append($('<li>').text("You are currently on server number" + name));
-          window.scrollTo(0, document.body.scrollHeight);
-        });
-      });
+          $('#participants').append($('<li>').text("You are currently on server number: " + name))
+          window.scrollTo(0, document.body.scrollHeight)
+        })
+      })
     </script>
   </body>
 </html>

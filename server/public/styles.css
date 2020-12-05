@@ -26,11 +26,15 @@ form button {
   border: none;
   padding: 10px;
 }
+#container {
+  display: flex;
+  align-items: stretch;
+}
 #messages { 
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 800px;
+  width: 80%;
 }
 #messages li { 
   padding: 5px 10px;
@@ -43,7 +47,7 @@ form button {
 }
 #participants {
   list-style-type: none;
-  margin: 0;
+  margin: 20px;
   padding: 0;
-  width: 800px;
+  width: 19%;
 }
