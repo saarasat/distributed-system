@@ -6,7 +6,7 @@ const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const redis = require('socket.io-redis')
 // In case there is no port set as the environment variable, 8080 will be used as a fallback
-const port = process.env.PORT || 8080
+const port = 8080
 // Each server is set an individual name for logging purposes
 const serverName = process.env.NAME || 'Unknown'
 
@@ -35,10 +35,10 @@ io.on('connection', function (socket) {
 
   let addedUser = false
 
-  // when a client send a new message, it will broadcasted to all rooms (to all clients)
+  // when a client send a new message, it will sent to rooms in that server
   socket.on('chat message', (message) => {
-    // we tell the client to execute 'chat message'
-    socket.broadcast.emit('chat message', {
+    // Tell all clients to execute 'chat message'
+    io.local.emit('chat message', {
       username: socket.username,
       message: message
     })
@@ -48,33 +48,39 @@ io.on('connection', function (socket) {
   socket.on('new user', (username) => {
     if (addedUser) return
 
-    // we store the username in the socket session for this client
+    // store the username in the socket session for this client
     socket.username = username
     amountOfUsers = amountOfUsers + 1
     addedUser = true
-    socket.emit('login', {
-      amountOfUsers: amountOfUsers
-    })
+    io.local.emit('login')
     console.log(socket.username + ' joined the chat')
 
-    // broadcast to all rooms (all clients) that a user has connected
-    socket.broadcast.emit('user joined', {
+    // send a message to the clients that a user has connected
+    io.local.emit('user joined', {
       username: socket.username,
       amountOfUsers: amountOfUsers
     })
   })
 
-  // when the user disconnects.. perform this
+  // when the user disconnects, perform this
   socket.on('disconnect', () => {
     console.log(socket.username + ' left the chat')
     if (addedUser) {
       amountOfUsers = amountOfUsers - 1
 
       // Tells the other clients that someone left the chat
-      socket.broadcast.emit('user left', {
+      io.local.emit('user left', {
         username: socket.username,
         amountOfUsers: amountOfUsers
       })
     }
+  })
+
+  socket.on('broadcast', () => {
+    // Broadcasts a message to all the clients
+    // in this case it has been set to be to indicate that an admin arrived
+    socket.broadcast.emit('admin arrived', {
+      message: 'You are being watched'
+    })
   })
 })

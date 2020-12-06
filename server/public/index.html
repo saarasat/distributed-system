@@ -60,7 +60,10 @@
             $chatPage.show()
             $loginPage.off('click')
             $currentInput = $inputMessage.focus()
-
+            if (username === 'admin') {
+              console.log("here")
+              socket.emit('broadcast')
+            }
             // Adding user at the server-end
             socket.emit('new user', username)
           }
@@ -72,10 +75,6 @@
           // if there is a non-empty message and a socket connection
           if (message && connected) {
             $inputMessage.val('')
-            addChatMessage({
-              username: username,
-              message: message
-            })
             // tell server to execute 'chat message' and send along one parameter
             socket.emit('chat message', message)
           }
@@ -153,9 +152,8 @@
         // Socket events 
         // If a server emits one of these events, the client's browser is updated accordingly
 
-        socket.on('login', (data) => {
+        socket.on('login', () => {
           connected = true
-          addParticipants(data)
         })
 
         socket.on('chat message', (data) => {
@@ -171,24 +169,17 @@
           log(data.username + ' left')
           addParticipants(data)
         })
-
+        // Tell the (one) client they have been disconnected 
         socket.on('disconnect', () => {
           log('you have been disconnected')
         })
 
-        socket.on('reconnect', () => {
-          log('you have been reconnected')
-          if (username) {
-            socket.emit('new user', username)
-          }
-        })
-
-        socket.on('reconnect_error', () => {
-          log('attempt to reconnect has failed')
-        })
-
         socket.on('serverName', (serverName) => {
           log('You are currently on server: ' + serverName)
+        })
+
+        socket.on('admin arrived', (data) => {
+          log(data.message)
         })
       })
     </script>
