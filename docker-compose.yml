@@ -9,10 +9,11 @@ services:
       - server-one
       - server-two
       - server-three
+      - server-four
+      - server-five
     container_name: nginx-server
     ports:
     - "8080:80"
-
   server-one:
     build: 
       context: ./server
@@ -24,6 +25,9 @@ services:
     container_name: server-one
     environment:
       - NAME=One
+      - PORT=8001
+    ports: 
+      - 8001:8080
   server-two:
     build: 
       context: ./server
@@ -35,6 +39,9 @@ services:
     container_name: server-two
     environment:
       - NAME=Two
+      - PORT=8002
+    ports: 
+      - 8002:8080
   server-three:
     build: 
       context: ./server
@@ -46,30 +53,39 @@ services:
     container_name: server-three
     environment:
       - NAME=Three
-  ### Adding new nodes, namely server nr. 4 and server nr. 5.
-  # server-four:
-  #  build: 
-  ##    context: ./server
-  #  image: server-four
-  #  links:
-  #    - redis
-  #  expose:
-  #    - "8080"
-  #  container_name: server-four
-  #  environment:
-  #    - NAME=Four
-  #server-five:
-  #  build: 
-  #    context: ./server
-  #  image: server-five
-  #  links:
-  #    - redis
-  #  expose:
-  #    - "8080"
-  #  container_name: server-five
-  #  environment:
-  #    - NAME=Five
-  ######
+      - PORT=8003
+    ports: 
+      - 8003:8080
+  ## Adding new nodes, namely server nr. 4 and server nr. 5.
+  server-four:
+    build: 
+      context: ./server
+    image: server-four
+    links:
+      - redis
+    expose:
+      - "8080"
+    container_name: server-four
+    environment:
+      - NAME=Four
+      - PORT=8004
+    ports: 
+      - 8004:8080
+  server-five:
+    build: 
+      context: ./server
+    image: server-five
+    links:
+      - redis
+    expose:
+      - "8080"
+    container_name: server-five
+    environment:
+      - NAME=Five
+      - PORT=8005
+    ports: 
+      - 8005:8080
+  #####
   redis:
     container_name: redis
     image: redis:alpine
